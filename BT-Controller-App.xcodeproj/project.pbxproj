@@ -26,14 +26,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8362194721C45E2D00DD9543 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8362194721C45E2D00DD9543 /* BT-Controller-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BT-Controller-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8362194A21C45E2D00DD9543 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8362194C21C45E2D00DD9543 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8362194F21C45E2D00DD9543 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8362195121C45E2E00DD9543 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8362195421C45E2E00DD9543 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8362195621C45E2E00DD9543 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8362195B21C45E2E00DD9543 /* TestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8362195B21C45E2E00DD9543 /* BT-Controller-AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BT-Controller-AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8362195F21C45E2E00DD9543 /* TestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppTests.swift; sourceTree = "<group>"; };
 		8362196121C45E2E00DD9543 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,8 +68,8 @@
 		8362194821C45E2D00DD9543 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8362194721C45E2D00DD9543 /* TestApp.app */,
-				8362195B21C45E2E00DD9543 /* TestAppTests.xctest */,
+				8362194721C45E2D00DD9543 /* BT-Controller-App.app */,
+				8362195B21C45E2E00DD9543 /* BT-Controller-AppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,9 +99,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8362194621C45E2D00DD9543 /* TestApp */ = {
+		8362194621C45E2D00DD9543 /* BT-Controller-App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8362196421C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "TestApp" */;
+			buildConfigurationList = 8362196421C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "BT-Controller-App" */;
 			buildPhases = (
 				8362194321C45E2D00DD9543 /* Sources */,
 				8362194421C45E2D00DD9543 /* Frameworks */,
@@ -111,14 +111,14 @@
 			);
 			dependencies = (
 			);
-			name = TestApp;
+			name = "BT-Controller-App";
 			productName = TestApp;
-			productReference = 8362194721C45E2D00DD9543 /* TestApp.app */;
+			productReference = 8362194721C45E2D00DD9543 /* BT-Controller-App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8362195A21C45E2E00DD9543 /* TestAppTests */ = {
+		8362195A21C45E2E00DD9543 /* BT-Controller-AppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8362196721C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "TestAppTests" */;
+			buildConfigurationList = 8362196721C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "BT-Controller-AppTests" */;
 			buildPhases = (
 				8362195721C45E2E00DD9543 /* Sources */,
 				8362195821C45E2E00DD9543 /* Frameworks */,
@@ -129,9 +129,9 @@
 			dependencies = (
 				8362195D21C45E2E00DD9543 /* PBXTargetDependency */,
 			);
-			name = TestAppTests;
+			name = "BT-Controller-AppTests";
 			productName = TestAppTests;
-			productReference = 8362195B21C45E2E00DD9543 /* TestAppTests.xctest */;
+			productReference = 8362195B21C45E2E00DD9543 /* BT-Controller-AppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -153,7 +153,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8362194221C45E2D00DD9543 /* Build configuration list for PBXProject "TestApp" */;
+			buildConfigurationList = 8362194221C45E2D00DD9543 /* Build configuration list for PBXProject "BT-Controller-App" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -166,8 +166,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8362194621C45E2D00DD9543 /* TestApp */,
-				8362195A21C45E2E00DD9543 /* TestAppTests */,
+				8362194621C45E2D00DD9543 /* BT-Controller-App */,
+				8362195A21C45E2E00DD9543 /* BT-Controller-AppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -215,7 +215,7 @@
 /* Begin PBXTargetDependency section */
 		8362195D21C45E2E00DD9543 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8362194621C45E2D00DD9543 /* TestApp */;
+			target = 8362194621C45E2D00DD9543 /* BT-Controller-App */;
 			targetProxy = 8362195C21C45E2E00DD9543 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -410,7 +410,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApp.app/TestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BT-Controller-App.app/BT-Controller-App";
 			};
 			name = Debug;
 		};
@@ -430,14 +430,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestApp.app/TestApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BT-Controller-App.app/BT-Controller-App";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8362194221C45E2D00DD9543 /* Build configuration list for PBXProject "TestApp" */ = {
+		8362194221C45E2D00DD9543 /* Build configuration list for PBXProject "BT-Controller-App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8362196221C45E2E00DD9543 /* Debug */,
@@ -446,7 +446,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8362196421C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "TestApp" */ = {
+		8362196421C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "BT-Controller-App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8362196521C45E2E00DD9543 /* Debug */,
@@ -455,7 +455,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8362196721C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "TestAppTests" */ = {
+		8362196721C45E2E00DD9543 /* Build configuration list for PBXNativeTarget "BT-Controller-AppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8362196821C45E2E00DD9543 /* Debug */,
