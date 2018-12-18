@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		83095BDB21C9210E00CCA13C /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDA21C9210E00CCA13C /* BluetoothService.swift */; };
+		83095BDD21C92A9700CCA13C /* MotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDC21C92A9700CCA13C /* MotionService.swift */; };
+		83095BDF21C92BF600CCA13C /* AttitudeDegrees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */; };
 		8362194B21C45E2D00DD9543 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362194A21C45E2D00DD9543 /* AppDelegate.swift */; };
 		8362194D21C45E2D00DD9543 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362194C21C45E2D00DD9543 /* ViewController.swift */; };
 		8362195021C45E2D00DD9543 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8362194E21C45E2D00DD9543 /* Main.storyboard */; };
@@ -26,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		83095BDA21C9210E00CCA13C /* BluetoothService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
+		83095BDC21C92A9700CCA13C /* MotionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionService.swift; sourceTree = "<group>"; };
+		83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttitudeDegrees.swift; sourceTree = "<group>"; };
 		8362194721C45E2D00DD9543 /* BT-Controller-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BT-Controller-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8362194A21C45E2D00DD9543 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8362194C21C45E2D00DD9543 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +62,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		83095BD921C920C800CCA13C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				83095BDA21C9210E00CCA13C /* BluetoothService.swift */,
+				83095BDC21C92A9700CCA13C /* MotionService.swift */,
+				83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		8362193E21C45E2D00DD9543 = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +93,7 @@
 		8362194921C45E2D00DD9543 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				83095BD921C920C800CCA13C /* Utils */,
 				8362194A21C45E2D00DD9543 /* AppDelegate.swift */,
 				8362194C21C45E2D00DD9543 /* ViewController.swift */,
 				8362194E21C45E2D00DD9543 /* Main.storyboard */,
@@ -197,7 +214,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83095BDF21C92BF600CCA13C /* AttitudeDegrees.swift in Sources */,
 				8362194D21C45E2D00DD9543 /* ViewController.swift in Sources */,
+				83095BDD21C92A9700CCA13C /* MotionService.swift in Sources */,
+				83095BDB21C9210E00CCA13C /* BluetoothService.swift in Sources */,
 				8362194B21C45E2D00DD9543 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
