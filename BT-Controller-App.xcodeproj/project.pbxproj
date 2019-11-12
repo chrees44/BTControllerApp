@@ -10,12 +10,16 @@
 		83095BDB21C9210E00CCA13C /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDA21C9210E00CCA13C /* BluetoothService.swift */; };
 		83095BDD21C92A9700CCA13C /* MotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDC21C92A9700CCA13C /* MotionService.swift */; };
 		83095BDF21C92BF600CCA13C /* AttitudeDegrees.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */; };
+		835380532378B2D2003245F2 /* MicroBitEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835380522378B2D2003245F2 /* MicroBitEvents.swift */; };
+		836113112376C66000BCC898 /* MatrixIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836113102376C66000BCC898 /* MatrixIcons.swift */; };
+		8361131323776D3E00BCC898 /* AttitudeChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8361131223776D3E00BCC898 /* AttitudeChange.swift */; };
 		8362194B21C45E2D00DD9543 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362194A21C45E2D00DD9543 /* AppDelegate.swift */; };
 		8362194D21C45E2D00DD9543 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362194C21C45E2D00DD9543 /* ViewController.swift */; };
 		8362195021C45E2D00DD9543 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8362194E21C45E2D00DD9543 /* Main.storyboard */; };
 		8362195221C45E2E00DD9543 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8362195121C45E2E00DD9543 /* Assets.xcassets */; };
 		8362195521C45E2E00DD9543 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8362195321C45E2E00DD9543 /* LaunchScreen.storyboard */; };
 		8362196021C45E2E00DD9543 /* TestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8362195F21C45E2E00DD9543 /* TestAppTests.swift */; };
+		837E500E21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837E500D21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +36,9 @@
 		83095BDA21C9210E00CCA13C /* BluetoothService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
 		83095BDC21C92A9700CCA13C /* MotionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionService.swift; sourceTree = "<group>"; };
 		83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttitudeDegrees.swift; sourceTree = "<group>"; };
+		835380522378B2D2003245F2 /* MicroBitEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicroBitEvents.swift; sourceTree = "<group>"; };
+		836113102376C66000BCC898 /* MatrixIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixIcons.swift; sourceTree = "<group>"; };
+		8361131223776D3E00BCC898 /* AttitudeChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttitudeChange.swift; sourceTree = "<group>"; };
 		8362194721C45E2D00DD9543 /* BT-Controller-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BT-Controller-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8362194A21C45E2D00DD9543 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8362194C21C45E2D00DD9543 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +49,7 @@
 		8362195B21C45E2E00DD9543 /* BT-Controller-AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BT-Controller-AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8362195F21C45E2E00DD9543 /* TestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppTests.swift; sourceTree = "<group>"; };
 		8362196121C45E2E00DD9543 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		837E500D21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothServiceDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +74,12 @@
 			isa = PBXGroup;
 			children = (
 				83095BDA21C9210E00CCA13C /* BluetoothService.swift */,
+				837E500D21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift */,
 				83095BDC21C92A9700CCA13C /* MotionService.swift */,
 				83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */,
+				8361131223776D3E00BCC898 /* AttitudeChange.swift */,
+				836113102376C66000BCC898 /* MatrixIcons.swift */,
+				835380522378B2D2003245F2 /* MicroBitEvents.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -214,7 +226,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				836113112376C66000BCC898 /* MatrixIcons.swift in Sources */,
+				835380532378B2D2003245F2 /* MicroBitEvents.swift in Sources */,
+				8361131323776D3E00BCC898 /* AttitudeChange.swift in Sources */,
 				83095BDF21C92BF600CCA13C /* AttitudeDegrees.swift in Sources */,
+				837E500E21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift in Sources */,
 				8362194D21C45E2D00DD9543 /* ViewController.swift in Sources */,
 				83095BDD21C92A9700CCA13C /* MotionService.swift in Sources */,
 				83095BDB21C9210E00CCA13C /* BluetoothService.swift in Sources */,
