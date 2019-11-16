@@ -102,57 +102,28 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
         self.pitchValueLabel.text = String(att.new.pitch)
         self.yawValueLabel.text = String(att.new.yaw)
         
-        if att.new.roll > 10 {
-            if att.old.roll <= 10 {
-                //            self.btSvc!.sendMatrixIcon(icon: MatrixIcons.ForwardArrow)
-                self.btSvc!.sendEvent(
-                    code: MicroBitEvents.MICROBIT_EVENT_SVC,
-                    value: MicroBitEvents.FORWARD)
-            }
-            self.forwardLabel.isHidden = false
-        } else {
-            self.forwardLabel.isHidden = true
-        }
-        
-        if att.new.roll < -10 {
-            if  att.old.roll >= -10 {
-                //            self.btSvc!.sendMatrixIcon(icon: MatrixIcons.BackwardArrow)
-                self.btSvc!.sendEvent(
-                    code: MicroBitEvents.MICROBIT_EVENT_SVC,
-                    value: MicroBitEvents.BACKWARD)
-            }
-            self.backLabel.isHidden = false
-        } else {
-            self.backLabel.isHidden = true
-        }
-        
-        if att.new.pitch < -10 {
-            if  att.old.pitch >= -10 {
-                self.btSvc!.sendEvent(
-                    code: MicroBitEvents.MICROBIT_EVENT_SVC,
-                    value: MicroBitEvents.LEFT)
-            }
-            self.leftLabel.isHidden = false
-        } else {
-            self.leftLabel.isHidden = true
-        }
-        
-        if att.new.pitch > 10 {
-            if att.old.pitch <= 10 {
-                self.btSvc!.sendEvent(
-                    code: MicroBitEvents.MICROBIT_EVENT_SVC,
-                    value: MicroBitEvents.RIGHT)
-            }
-            self.rightLabel.isHidden = false
-        } else {
-            self.rightLabel.isHidden = true
-        }
-        
-        // Check if we're level
-        if att.new.isLevel(tolerance: 10) && !att.old.isLevel(tolerance: 10) {
+        if att.new.roll != att.old.roll {
+            // Scale degrees to % of max and shift -100..100 to 0..200 so it can be sent as unsigned.
+            let percent = 100 * att.new.roll / motionSvc.maxDegrees
+            let shifted = percent + 100
+            let unsigned = UInt16(truncatingIfNeeded: shifted)
+            print("handleDeviceMotionUpdate [roll: att.new.roll: \(att.new.roll), unsigned: \(unsigned)]")
             self.btSvc!.sendEvent(
-                code: MicroBitEvents.MICROBIT_EVENT_SVC,
-                value: MicroBitEvents.NEUTRAL )
+                code: MicroBitEvents.MICROBIT_EVENT_SVC_FWD_BWD,
+                value: unsigned
+            )
+        }
+        
+        if att.new.pitch != att.old.pitch {
+            // Scale degrees to % of max and shift -100..100 to 0..200 so it can be sent as unsigned.
+            let percent = 100 * att.new.pitch / motionSvc.maxDegrees
+            let shifted = percent + 100
+            let unsigned = UInt16(truncatingIfNeeded: shifted)
+            print("handleDeviceMotionUpdate [pitch: att.new.pitch: \(att.new.pitch), unsigned: \(unsigned)]")
+            self.btSvc!.sendEvent(
+                code: MicroBitEvents.MICROBIT_EVENT_SVC_LFT_RGT,
+                value: unsigned
+            )
         }
     }
 }

@@ -9,7 +9,9 @@
 import Foundation
 
 struct MicroBitEvents {
-    static let MICROBIT_EVENT_SVC: UInt16 = 2000
+    static let MICROBIT_EVENT_SVC_FWD_BWD: UInt16 = 2001
+    static let MICROBIT_EVENT_SVC_LFT_RGT: UInt16 = 2002
+
     static let NEUTRAL: UInt16 = 1
     static let FORWARD: UInt16 = 2
     static let BACKWARD: UInt16 = 3

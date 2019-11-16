@@ -49,9 +49,6 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
      bluez test advertisement: 870974B0-02AB-43D1-A524-AAB9D3C53E5B
      */
     
-    //    init(delegate: (CBManagerState) -> Void) {
-    //    init(mgrStateDelegate: @escaping (_: String) -> Void) {
-    //        self.mgrStateDelegate = mgrStateDelegate
     init(delegate: BluetoothServiceDelegate) {
         self.caller = delegate
         super.init()
@@ -115,6 +112,13 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         print("centralManager didFailToConnect [\(error!)]")
         //        caller.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
+    }
+    
+    // Called on diconnection
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("centralManager didDisconnect [\(peripheral.name ?? ""), \(getPeripheralState(state: peripheral.state))]")
+        self.connectedPeripheral = nil
+        caller!.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
     }
     
     //MARK: CBPeripheralDelegate methods
@@ -258,13 +262,16 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func sendEvent(code: UInt16, value: UInt16) {
-        print("sendEvent [\(code), \(value)]")
         if let cha = self.eventWriteCharacteristic {
             let data = convertUint16ToByteArray(int: code) + convertUint16ToByteArray(int: value)
-            self.connectedPeripheral!.writeValue(
-                Data(bytes: data),
-                for: cha,
-                type: CBCharacteristicWriteType.withResponse)
+            if let periph = self.connectedPeripheral {
+                periph.writeValue(
+                    Data(bytes: data),
+                    for: cha,
+                    type: CBCharacteristicWriteType.withResponse)
+            } else {
+                print("sendEvent Unable to send to disconnected peripheral")
+            }
         }
     }
     
@@ -274,48 +281,3 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         return bytes
     }
 }
-/*
- centralManagerDidUpdateState [true]
- retrievePeripheral [870974B0-02AB-43D1-A524-AAB9D3C53E5B]
- retrievePeripheral [raspberrypi, disconnected]
- centralManager didConnect [<CBPeripheral: 0x16640700, identifier = 870974B0-02AB-43D1-A524-AAB9D3C53E5B, name = raspberrypi, state = connected>]
- peripheral discovered [services: 3]
- 180D: <CBService: 0x1656a250, isPrimary = YES, UUID = Heart Rate>
- characteristics discovered for service: Heart Rate [3]
- 2A37: notify
- 2A38: read
- 2A39: write
- readValue for characteristic [2A38, value: 1]
- 2018-12-31 16:46:35.702769+0100 BT-Controller-App[720:275258] [CoreBluetooth] WARNING: The delegate for <CBPeripheral: 0x16640700, identifier = 870974B0-02AB-43D1-A524-AAB9D3C53E5B, name = raspberrypi, state = connected> does not implement -[peripheral:didModifyServices:]
- 2018-12-31 16:46:35.762812+0100 BT-Controller-App[720:275258] [CoreBluetooth] WARNING: The delegate for <CBPeripheral: 0x16640700, identifier = 870974B0-02AB-43D1-A524-AAB9D3C53E5B, name = raspberrypi, state = connected> does not implement -[peripheral:didModifyServices:]
- 2018-12-31 16:46:35.822833+0100 BT-Controller-App[720:275258] [CoreBluetooth] WARNING: The delegate for <CBPeripheral: 0x16640700, identifier = 870974B0-02AB-43D1-A524-AAB9D3C53E5B, name = raspberrypi, state = connected> does not implement -[peripheral:didModifyServices:]
- */
-/*
- Response from Micro:bit
- 
- centralManagerDidUpdateState [true]
- retrievePeripherals [BBC micro:bit [pepep], CBPeripheralState]
- centralManager didConnect [<CBPeripheral: 0x1461c920, identifier = 7AA8D89D-7157-4F26-B702-61F92007386C, name = BBC micro:bit [pepep], state = connected>]
- peripheral discovered [services: 4]
- <CBService: 0x1463d9d0, isPrimary = YES, UUID = E95D93B0-251D-470A-A062-FA1922DFA9A8>
- <CBService: 0x1463dca0, isPrimary = YES, UUID = E97DD91D-251D-470A-A062-FA1922DFA9A8>
- <CBService: 0x14554420, isPrimary = YES, UUID = Device Information>
- <CBService: 0x1451b4d0, isPrimary = YES, UUID = E95D93AF-251D-470A-A062-FA1922DFA9A8>
- characteristics discovered for service: E95D93B0-251D-470A-A062-FA1922DFA9A8 [1]
- <CBCharacteristic: 0x14558a60, UUID = E95D93B1-251D-470A-A062-FA1922DFA9A8, properties = 0xA, value = (null), notifying = NO>
- characteristics discovered for service: E97DD91D-251D-470A-A062-FA1922DFA9A8 [1]
- <CBCharacteristic: 0x1451d190, UUID = E97D3B10-251D-470A-A062-FA1922DFA9A8, properties = 0x14, value = (null), notifying = NO>
- characteristics discovered for service: Device Information [3]
- <CBCharacteristic: 0x1463c2f0, UUID = Model Number String, properties = 0x2, value = (null), notifying = NO>
- <CBCharacteristic: 0x1463ca60, UUID = Serial Number String, properties = 0x2, value = (null), notifying = NO>
- <CBCharacteristic: 0x1463caa0, UUID = Firmware Revision String, properties = 0x2, value = (null), notifying = NO>
- characteristics discovered for service: E95D93AF-251D-470A-A062-FA1922DFA9A8 [4]
- <CBCharacteristic: 0x1463e560, UUID = E95D9775-251D-470A-A062-FA1922DFA9A8, properties = 0x12, value = (null), notifying = NO>
- <CBCharacteristic: 0x1463e630, UUID = E95D5404-251D-470A-A062-FA1922DFA9A8, properties = 0xC, value = (null), notifying = NO>
- <CBCharacteristic: 0x1463e670, UUID = E95D23C4-251D-470A-A062-FA1922DFA9A8, properties = 0x8, value = (null), notifying = NO>
- <CBCharacteristic: 0x1463cb20, UUID = E95DB84C-251D-470A-A062-FA1922DFA9A8, properties = 0x12, value = (null), notifying = NO>
- <CBDescriptor: 0x14556570, UUID = Client Characteristic Configuration, value = (null)>
- <CBDescriptor: 0x1463e490, UUID = Client Characteristic Configuration, value = (null)>
- <CBDescriptor: 0x145181a0, UUID = Client Characteristic Configuration, value = (null)>
- 
- */

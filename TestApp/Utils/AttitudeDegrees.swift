@@ -10,19 +10,11 @@ struct AttitudeDegrees: Equatable {
     let roll: Int
     let pitch: Int
     let yaw: Int
-    
-    /** Whether the phone is level (within tolerance degrees) */
-    func isLevel(tolerance: Int) -> Bool {
-        self.roll < tolerance
-            && self.roll > -tolerance
-            && self.pitch < tolerance
-            && self.pitch > -tolerance
-    }
-    
+        
     static func == (lhs: AttitudeDegrees, rhs: AttitudeDegrees) -> Bool {
         return lhs.roll == rhs.roll
             && lhs.pitch == rhs.pitch
-            && lhs.yaw == rhs.yaw
+            && lhs.yaw == rhs.yaw   
     }
     
     static func != (lhs: AttitudeDegrees, rhs: AttitudeDegrees) -> Bool {
