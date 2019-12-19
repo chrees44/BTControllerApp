@@ -12,29 +12,31 @@ import CoreBluetooth
 class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     var centralMgr: CBCentralManager!
-    var caller: BluetoothServiceDelegate?
+    var cbSvcDelegate: BluetoothServiceDelegate?
     //    var mgrStateDelegate: (_: String) -> Void
     var knownPeripherals: [CBPeripheral] = []
     var connectedPeripheral: CBPeripheral?
-    var matrixCharacteristic: CBCharacteristic?
-    var uartRxCharacteristic: CBCharacteristic?
-    var eventWriteCharacteristic: CBCharacteristic?
+    
+    var mbLedScrollCharacteristic: CBCharacteristic?
+    var mbLedMatrixCharacteristic: CBCharacteristic?
+    var mbUartWriteCharacteristic: CBCharacteristic?
+    var mbUartReadCharacteristic: CBCharacteristic?
+    var mbEventWriteCharacteristic: CBCharacteristic?
+    var mbEventReadCharacteristic: CBCharacteristic?
     
     let uuidMicrobit: UUID! = UUID(uuidString: "7AA8D89D-7157-4F26-B702-61F92007386C")
-    let mbLedService: String = "E95DD91D-251D-470A-A062-FA1922DFA9A8"
-    let mbLedScrollCharc: String = "E95D93EE-251D-470A-A062-FA1922DFA9A8"
-    let mbLedMatrixCharc: String = "E95D7B77-251D-470A-A062-FA1922DFA9A8"
     
-    let mbEventService: String = "E95D93AF-251D-470A-A062-FA1922DFA9A8"
-    // characteristics discovered for service: E95D93AF-251D-470A-A062-FA1922DFA9A8 [4]
-    // E95D9775-251D-470A-A062-FA1922DFA9A8: read, notify
-    let mbEventCharcWrite: String = "E95D5404-251D-470A-A062-FA1922DFA9A8" //: write, writeWithoutResponse
-    // E95D23C4-251D-470A-A062-FA1922DFA9A8: write
-    // E95DB84C-251D-470A-A062-FA1922DFA9A8: read, notify
+    let mbLedServiceUUID: CBUUID =  CBUUID(string: "E95DD91D-251D-470A-A062-FA1922DFA9A8")
+    let mbLedScrollCharcUUID: CBUUID =  CBUUID(string: "E95D93EE-251D-470A-A062-FA1922DFA9A8")
+    let mbLedMatrixCharcUUID: CBUUID =  CBUUID(string: "E95D7B77-251D-470A-A062-FA1922DFA9A8")
     
-    let mbUARTService: String =  "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
-    let mbUartTxCharc: String =  "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
-    let mbUartRxCharc: String =  "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+    let mbEventServiceUUID: CBUUID =  CBUUID(string: "E95D93AF-251D-470A-A062-FA1922DFA9A8")
+    let mbEventReadCharcUUID: CBUUID =  CBUUID(string: "E95D9775-251D-470A-A062-FA1922DFA9A8") //: read, notify
+    let mbEventWriteCharcUUID: CBUUID =  CBUUID(string: "E95D5404-251D-470A-A062-FA1922DFA9A8") //: write, writeWithoutResponse
+    
+    let mbUARTServiceUUID: CBUUID =  CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
+    let mbUartWriteCharcUUID: CBUUID =  CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
+    let mbUartReadCharcUUID: CBUUID =  CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E")
     
     let uuidRpiBluezTest: UUID! = UUID(uuidString: "870974B0-02AB-43D1-A524-AAB9D3C53E5B")
     
@@ -50,15 +52,26 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
      */
     
     init(delegate: BluetoothServiceDelegate) {
-        self.caller = delegate
+        self.cbSvcDelegate = delegate
         super.init()
         
-        centralMgr = CBCentralManager(delegate: self, queue: nil, options:nil)
+        centralMgr = CBCentralManager(delegate: self, queue: nil, options: nil)
     }
     
-    
     func scanForPeripherals() -> Void {
+        print("Scanning..")
+        self.cbSvcDelegate?.updateScanningState(isScanning: true)
         centralMgr.scanForPeripherals(withServices: nil, options: nil)
+        
+        Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { (timer) in
+            self.stopScanning()
+        }
+    }
+    
+    func stopScanning() -> Void {
+        print("Stop scanning")
+        self.cbSvcDelegate?.updateScanningState(isScanning: false)
+        centralMgr.stopScan()
     }
     
     func retrievePeripheral(uuid: UUID) -> Void {
@@ -78,16 +91,12 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    //    func connect(peripheral: CBPeripheral) -> Void {
-    //        centralMgr.connect(peripheral)
-    //    }
-    
     //MARK: CBCentralManagerDelegate methods
     
     // Connect, Disconnect, etc
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("centralManagerDidUpdateState [\(getCBManagerState(state: central.state))]")
-        self.caller!.updateManagerState(state: getCBManagerState(state: central.state))
+        self.cbSvcDelegate!.updateManagerState(state: getCBManagerState(state: central.state))
     }
     
     // Called with scan results
@@ -95,17 +104,19 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                         didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any],
                         rssi RSSI: NSNumber) {
-        print("centralManager didDiscover [\(peripheral.debugDescription)]")
+        if let name = peripheral.name {
+            print("centralManager didDiscover \(name) [\(peripheral.debugDescription)]")
+        }
     }
     
     // Called on connect success
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("centralManager didConnect [\(peripheral.name ?? ""), \(getPeripheralState(state: peripheral.state))]")
         self.connectedPeripheral = peripheral
-        caller!.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
+        self.cbSvcDelegate!.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
         
         peripheral.delegate = self
-        peripheral.discoverServices(nil)
+        peripheral.discoverServices([mbEventServiceUUID])
     }
     
     // Called on connect failure
@@ -114,11 +125,11 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         //        caller.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
     }
     
-    // Called on diconnection
+    // Called on disconnection
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("centralManager didDisconnect [\(peripheral.name ?? ""), \(getPeripheralState(state: peripheral.state))]")
         self.connectedPeripheral = nil
-        caller!.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
+        self.cbSvcDelegate!.updatePeripheralState(uuid: peripheral.identifier, state: peripheral.state)
     }
     
     //MARK: CBPeripheralDelegate methods
@@ -147,8 +158,7 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         
         print("characteristics discovered for service: \(service.uuid) [\(service.characteristics!.count)]")
         for cha in service.characteristics! {
-            print("\(cha.uuid.uuidString): \(self.getCharcProp(props: cha.properties))")
-            //            peripheral.discoverDescriptors(for: cha)
+//            print("\(cha.uuid.uuidString): \(self.getCharcUUIDProp(props: cha.properties))")
             
             // RPi
             if cha.uuid.uuidString == "2A38" {
@@ -159,19 +169,24 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 let encString = Array("F".utf8)
                 peripheral.writeValue(Data(bytes: encString), for: cha, type: CBCharacteristicWriteType.withResponse)
             }
-                // Micro:Bit
-            else if cha.uuid.uuidString == mbLedScrollCharc {
-                //let encString = Array("HELLO IPHONE!".utf8)
-                //peripheral.writeValue(Data(bytes: encString), for: cha, type: CBCharacteristicWriteType.withResponse)
-            }
-            else if cha.uuid.uuidString == mbLedMatrixCharc {
-                self.matrixCharacteristic = cha
-            }
-            else if cha.uuid.uuidString == mbUartRxCharc {
-                self.uartRxCharacteristic = cha
-            }
-            else if cha.uuid.uuidString == mbEventCharcWrite {
-                self.eventWriteCharacteristic = cha
+            // Micro:Bit
+            else {
+                switch cha.uuid {
+                case mbLedScrollCharcUUID:
+                    self.mbLedScrollCharacteristic = cha
+                    print("Characteristic found [\(getCharacteristicDescription(cha))]")
+                case mbLedMatrixCharcUUID:
+                    self.mbLedMatrixCharacteristic = cha
+                    print("Characteristic found [\(getCharacteristicDescription(cha))]")
+                case mbUartReadCharcUUID:
+                    self.mbUartWriteCharacteristic = cha
+                    print("Characteristic found [\(getCharacteristicDescription(cha))]")
+                case mbEventWriteCharcUUID:
+                    self.mbEventWriteCharacteristic = cha
+                    print("Characteristic found [\(getCharacteristicDescription(cha))]")
+                default:
+                    print("Characteristic ignored [\(getCharacteristicDescription(cha))]")
+                }
             }
         }
     }
@@ -184,7 +199,7 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         if let value = characteristic.value {
             let str = value.map({(d) in String(d)}).joined(separator: ",")
             print("readValue for characteristic [\(characteristic.uuid), value: \(str)]")
-            caller?.updateReadValue(service: characteristic.service, characteristic: characteristic, value: str)
+            self.cbSvcDelegate?.updateReadValue(service: characteristic.service, characteristic: characteristic, value: str)
         } else {
             print("readValue No value for characteristic [\(characteristic.uuid)]")
         }
@@ -201,6 +216,47 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
+    func sendMatrixIcon(icon: [UInt8]) {
+        print("sendMatrixIcon [\(icon)]")
+        if let cha = self.mbLedMatrixCharacteristic {
+            self.connectedPeripheral!.writeValue(
+                Data(bytes: icon),
+                for: cha,
+                type: CBCharacteristicWriteType.withResponse)
+        }
+    }
+    
+    func sendUartValue(value: String) {
+        print("sendUartValue [\(value)]")
+        if let cha = self.mbUartWriteCharacteristic {
+            let encString = Array("\(value):".utf8)
+            self.connectedPeripheral!.writeValue(
+                Data(bytes: encString),
+                for: cha,
+                type: CBCharacteristicWriteType.withResponse)
+        }
+    }
+    
+    func sendEvent(code: UInt16, value: UInt16) {
+        if let cha = self.mbEventWriteCharacteristic {
+            let data = convertUint16ToByteArray(int: code) + convertUint16ToByteArray(int: value)
+            if let periph = self.connectedPeripheral {
+                periph.writeValue(
+                    Data(bytes: data),
+                    for: cha,
+                    type: CBCharacteristicWriteType.withResponse)
+            } else {
+                print("sendEvent Unable to send to disconnected peripheral")
+            }
+        }
+    }
+    
+    func convertUint16ToByteArray(int: UInt16) -> [UInt8] {
+        var le = int.littleEndian
+        let bytes = withUnsafeBytes(of: &le) { Array($0) }
+        return bytes
+    }
+
     //MARK: Functions
     
     func getCBManagerState(state: CBManagerState) -> String {
@@ -220,10 +276,14 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         case .connected: return "Connected"
         case .disconnecting: return "Disconnecting"
         case .disconnected: return "Disconnected"
-        } 
+        }
     }
     
-    func getCharcProp(props: CBCharacteristicProperties) -> String {
+    func getCharacteristicDescription(_ characteristic: CBCharacteristic) -> String {
+        "\(characteristic.uuid.uuidString): \(self.getCharcUUIDProp(props: characteristic.properties))"
+    }
+    
+    func getCharcUUIDProp(props: CBCharacteristicProperties) -> String {
         var propLabels: [String] = []
         if props.contains(CBCharacteristicProperties.read) {
             propLabels.append("read")
@@ -238,46 +298,5 @@ class BluetoothService: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             propLabels.append("notify")
         }
         return propLabels.joined(separator: ", ")
-    }
-    
-    func sendMatrixIcon(icon: [UInt8]) {
-        print("sendMatrixIcon [\(icon)]")
-        if let cha = self.matrixCharacteristic {
-            self.connectedPeripheral!.writeValue(
-                Data(bytes: icon),
-                for: cha,
-                type: CBCharacteristicWriteType.withResponse)
-        }
-    }
-    
-    func sendUartValue(value: String) {
-        print("sendUartValue [\(value)]")
-        if let cha = self.uartRxCharacteristic {
-            let encString = Array("\(value):".utf8)
-            self.connectedPeripheral!.writeValue(
-                Data(bytes: encString),
-                for: cha,
-                type: CBCharacteristicWriteType.withResponse)
-        }
-    }
-    
-    func sendEvent(code: UInt16, value: UInt16) {
-        if let cha = self.eventWriteCharacteristic {
-            let data = convertUint16ToByteArray(int: code) + convertUint16ToByteArray(int: value)
-            if let periph = self.connectedPeripheral {
-                periph.writeValue(
-                    Data(bytes: data),
-                    for: cha,
-                    type: CBCharacteristicWriteType.withResponse)
-            } else {
-                print("sendEvent Unable to send to disconnected peripheral")
-            }
-        }
-    }
-    
-    func convertUint16ToByteArray(int: UInt16) -> [UInt8] {
-        var le = int.littleEndian
-        let bytes = withUnsafeBytes(of: &le) { Array($0) }
-        return bytes
     }
 }

@@ -10,6 +10,9 @@
 import Foundation
 
 struct MatrixIcons {
+    
+    // Each hex value is a row of the microbit LEDs
+    // In each row, the LEDs are a bitmap (1,2,4,8,16) so all on is 31 (0x1f)
     static let Neutral: [UInt8] = [0x0,0x0,0x4,0x0,0x0]
     static let ForwardArrow: [UInt8] = [0x4,0xe,0x1f,0x0,0x0]
     static let BackwardArrow: [UInt8] = [0x0,0x0,0x1f,0xe,0x4]

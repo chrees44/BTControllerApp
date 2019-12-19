@@ -77,8 +77,8 @@
 				837E500D21DBFD4C00F1FB39 /* BluetoothServiceDelegate.swift */,
 				83095BDC21C92A9700CCA13C /* MotionService.swift */,
 				83095BDE21C92BF600CCA13C /* AttitudeDegrees.swift */,
-				8361131223776D3E00BCC898 /* AttitudeChange.swift */,
 				836113102376C66000BCC898 /* MatrixIcons.swift */,
+				8361131223776D3E00BCC898 /* AttitudeChange.swift */,
 				835380522378B2D2003245F2 /* MicroBitEvents.swift */,
 			);
 			path = Utils;
@@ -106,8 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				83095BD921C920C800CCA13C /* Utils */,
-				8362194A21C45E2D00DD9543 /* AppDelegate.swift */,
 				8362194C21C45E2D00DD9543 /* ViewController.swift */,
+				8362194A21C45E2D00DD9543 /* AppDelegate.swift */,
 				8362194E21C45E2D00DD9543 /* Main.storyboard */,
 				8362195121C45E2E00DD9543 /* Assets.xcassets */,
 				8362195321C45E2E00DD9543 /* LaunchScreen.storyboard */,

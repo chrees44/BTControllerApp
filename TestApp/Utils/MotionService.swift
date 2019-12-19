@@ -17,13 +17,13 @@ class MotionService {
     let maxSteps: Int = 4
     // Calculated value to ensure the max is a multiple of the step size
     lazy var maxDegrees: Int = self.stepSizeInDegrees * self.maxSteps
-
+    
     let motion = CMMotionManager()
     var attitude: AttitudeDegrees = AttitudeDegrees(roll: 0, pitch: 0, yaw: 0)
     
     func startDeviceMotionSensing(attitudeHandler: @escaping (AttitudeChange) -> Void) -> Void {
         print("startDeviceMotionSensing [self.motion.isDeviceMotionAvailable: \(self.motion.isDeviceMotionAvailable)]")
-
+        
         if self.motion.isDeviceMotionAvailable && !self.motion.isDeviceMotionActive {
             self.motion.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: {
                 (deviceMotion, error) -> Void in
@@ -50,18 +50,25 @@ class MotionService {
         }
     }
     
+    func stopDeviceMotionSensing() -> Void {
+        if self.motion.isDeviceMotionActive {
+            self.motion.stopDeviceMotionUpdates()
+        }
+    }
+    
+    
     // Determines whether roll or pitch have changed.
-    func changeDetctor(newAtt: AttitudeDegrees,
-                       oldAtt: AttitudeDegrees,
-                       step: Int,
-                       maxDegrees: Int) -> AttitudeDegrees? {
+    private func changeDetctor(newAtt: AttitudeDegrees,
+                               oldAtt: AttitudeDegrees,
+                               step: Int,
+                               maxDegrees: Int) -> AttitudeDegrees? {
         // If we want to include yaw changes then can use ??
         
         let newRoll: Int = comparer(newVal: newAtt.roll, oldVal: oldAtt.roll, step: step, maxDegrees: maxDegrees)
         let newPitch: Int = comparer(newVal: newAtt.pitch, oldVal: oldAtt.pitch, step: step, maxDegrees: maxDegrees)
         
         if newRoll != oldAtt.roll || newPitch != oldAtt.pitch {
-//            print("changeDetctor [old.Roll: \(oldAtt.roll), new.Roll: \(newAtt.roll), new: \(newRoll), \(newPitch)]")
+            //            print("changeDetctor [old.Roll: \(oldAtt.roll), new.Roll: \(newAtt.roll), new: \(newRoll), \(newPitch)]")
             return AttitudeDegrees(roll: newRoll, pitch: newPitch, yaw: 0)
         } else {
             return nil
@@ -70,29 +77,23 @@ class MotionService {
     
     // Works out whether a value has increased to the next step.
     // Returns the new step value or the original value.
-    func comparer(newVal: Int, oldVal: Int, step: Int, maxDegrees: Int) -> Int {
-        let rollPolarity: Int = newVal > 0 ? 1 : -1
+    private func comparer(newVal: Int, oldVal: Int, step: Int, maxDegrees: Int) -> Int {
+        let polarity: Int = newVal > 0 ? 1 : -1
         
         if abs(newVal) < step && abs(oldVal) >= step {
             return 0
         } else if abs(newVal) >= maxDegrees {
             if abs(oldVal) < maxDegrees {
-                return maxDegrees * rollPolarity
+                return maxDegrees * polarity
             } else {
                 return oldVal
             }
         } else if abs(newVal) >= abs(oldVal) + step {
-            return oldVal + step * rollPolarity
+            return oldVal + step * polarity
         } else if abs(newVal) <= abs(oldVal) - step {
-            return oldVal - step * rollPolarity
+            return oldVal - step * polarity
         } else {
             return oldVal
-        }
-    }
-    
-    func stopDeviceMotionSensing() -> Void {
-        if self.motion.isDeviceMotionActive {
-            self.motion.stopDeviceMotionUpdates()
         }
     }
     

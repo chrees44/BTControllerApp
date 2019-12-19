@@ -41,6 +41,8 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
     
     @IBOutlet weak var rightLabel: UILabel!
     
+    @IBOutlet weak var scanButtonOutlet: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -48,8 +50,12 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
     
     //MARK: Actions
     
-    @IBAction func goButton(_ sender: UIButton) {
-        btSvc!.scanForPeripherals()
+    @IBAction func scanButton(_ sender: UIButton) {
+        if scanButtonOutlet.titleLabel?.text == "Scan" {
+            btSvc!.scanForPeripherals()
+        } else {
+            btSvc!.stopScanning()
+        }
     }
     
     @IBAction func startButton(_ sender: UIButton) {
@@ -86,6 +92,12 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
         self.statusLabel.text = state
     }
     
+    func updateScanningState(isScanning: Bool) {
+        //print("updateScanningState [\(isScanning))]")
+        let title = isScanning ? "Scanning..." : "Scan"
+        self.scanButtonOutlet.setTitle(title, for: .normal)
+    }
+    
     func updatePeripheralState(uuid: UUID, state: CBPeripheralState) {
         let msg = btSvc!.getPeripheralState(state: state)
         print("updatePeripheralState [\(msg)]")
@@ -107,7 +119,9 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
             let percent = 100 * att.new.roll / motionSvc.maxDegrees
             let shifted = percent + 100
             let unsigned = UInt16(truncatingIfNeeded: shifted)
-            print("handleDeviceMotionUpdate [roll: att.new.roll: \(att.new.roll), unsigned: \(unsigned)]")
+            
+            //print("handleDeviceMotionUpdate [roll: att.new.roll: \(att.new.roll), unsigned: \(unsigned)]")
+            
             self.btSvc!.sendEvent(
                 code: MicroBitEvents.MICROBIT_EVENT_SVC_FWD_BWD,
                 value: unsigned
@@ -119,7 +133,9 @@ class ViewController: UIViewController, UITextFieldDelegate, BluetoothServiceDel
             let percent = 100 * att.new.pitch / motionSvc.maxDegrees
             let shifted = percent + 100
             let unsigned = UInt16(truncatingIfNeeded: shifted)
-            print("handleDeviceMotionUpdate [pitch: att.new.pitch: \(att.new.pitch), unsigned: \(unsigned)]")
+            
+            //print("handleDeviceMotionUpdate [pitch: att.new.pitch: \(att.new.pitch), unsigned: \(unsigned)]")
+            
             self.btSvc!.sendEvent(
                 code: MicroBitEvents.MICROBIT_EVENT_SVC_LFT_RGT,
                 value: unsigned

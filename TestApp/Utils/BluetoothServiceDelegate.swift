@@ -13,6 +13,8 @@ protocol BluetoothServiceDelegate: class {
     
     func updateManagerState(state: String)
     
+    func updateScanningState(isScanning: Bool)
+    
     func updatePeripheralState(uuid: UUID, state: CBPeripheralState)
     
     func updateReadValue(service: CBService, characteristic: CBCharacteristic, value: String)
